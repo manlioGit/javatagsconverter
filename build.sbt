@@ -11,7 +11,7 @@ libraryDependencies += "javax.servlet" % "javax.servlet-api" % "3.0.1" % "provid
 
 libraryDependencies += "org.jsoup" % "jsoup" % "1.10.2"
 
-libraryDependencies += "com.github.manliogit" % "javatags" % "0.4.1"
+libraryDependencies += "com.github.manliogit" % "javatags" % "0.4.2"
 
 libraryDependencies += "org.scalactic" %% "scalactic" % "3.0.1"
 
