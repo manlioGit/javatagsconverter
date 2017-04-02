@@ -10,7 +10,7 @@ class Layout(content: String, converted: String, error: String) {
             meta(attr("charset -> utf-8")),
             meta(attr("http-equiv -> X-UA-Compatible", "content -> IE=edge")),
             meta(attr("name -> viewport", "content -> width=device-width, initial-scale=1")),
-            meta(attr("name -> description", "content -> javatags converter: convert html in javatags language")),
+            meta(attr("name -> description", "content -> javatags converter: convert html in javatags language, Java HTML builder")),
             meta(attr("name -> author", "content -> manlioGit")),
             title("javatagsconverter"),
             link(attr("href -> css/bootstrap.min.css", "rel-> stylesheet")),
@@ -25,6 +25,13 @@ class Layout(content: String, converted: String, error: String) {
               div(attr("class -> container" ),
                   div(attr("class -> navbar-header"),
                       a(attr("class -> navbar-brand", "href -> /" ), "JavaTagsConverter")
+                  ),
+                  div(attr("class -> collapse navbar-collapse"),
+                    ul(attr("class -> nav navbar-nav"),
+                        li(
+                          a(attr("href -> https://github.com/manlioGit/javatags", "target -> _blank"),"Online converter for JavaTags")
+                        )
+                     )
                   )
               )
           ),

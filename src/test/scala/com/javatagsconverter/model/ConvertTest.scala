@@ -126,8 +126,24 @@ class ConvertTest extends FunSuite {
                                  |  )
                                  |)""".stripMargin
                              
-      val result = new Convert("<body charset='utf-8'><div></div></body>").toJavaTags()
+        val result = new Convert("<body charset='utf-8'><div></div></body>").toJavaTags()
 
-      assert(result == expected)
+        assert(result == expected)
+  }
+  
+  test("script content is managed as text node"){
+        val expected =  """|
+                                 |html(
+                                 |  head(
+                                 |    script(
+                                 |      text("console.log('hello');")
+                                 |    )
+                                 |  ),
+                                 |  body()
+                                 |)""".stripMargin
+    
+        val result = new Convert("<script>console.log('hello');</script>").toJavaTags()
+    
+       assert(result == expected)
   }
 }
