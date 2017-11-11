@@ -19,5 +19,5 @@ libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.4" % "test"
 
 enablePlugins(JettyPlugin)
 
-enablePlugins(JavaAppPackaging)
+enablePlugins(JavaServerAppPackaging)
 
