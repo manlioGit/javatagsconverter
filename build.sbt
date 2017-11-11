@@ -3,7 +3,7 @@ name := "javatagsconverter"
 
 version := "1.0.0-SNAPSHOT"
  
-scalaVersion := "2.11.8"
+scalaVersion := "2.12.3"
 
 resolvers += Resolver.mavenLocal
 
@@ -13,9 +13,9 @@ libraryDependencies += "org.jsoup" % "jsoup" % "1.10.2"
 
 libraryDependencies += "com.github.manliogit" % "javatags" % "0.4.2"
 
-libraryDependencies += "org.scalactic" %% "scalactic" % "3.0.1"
+libraryDependencies += "org.scalactic" %% "scalactic" % "3.0.4"
 
-libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.1" % "test"
+libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.4" % "test"
 
 enablePlugins(JettyPlugin)
 

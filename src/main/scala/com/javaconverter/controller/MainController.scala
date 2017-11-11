@@ -29,11 +29,12 @@ class MainController extends Controller {
 		  case _: Exception => error = " Probably your input It's not a valid html!"
 		}
 		context.response.getWriter.write(
-		    new Layout( 
+		    new Layout(
+		        context.request.getContextPath,
 		        javatags, 
 		        htmlFormat,
 		        error
-        ).build().render()  )
-
+        ).render()  
+     )
   }
 }

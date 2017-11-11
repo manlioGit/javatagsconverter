@@ -2,9 +2,9 @@ package com.javaconverter.view
 import  com.github.manliogit.javatags.lang.HtmlHelper._
 import com.github.manliogit.javatags.element.Element
 
-class Layout(content: String, converted: String, error: String) {
+class Layout(path: String, content: String, converted: String, error: String) extends Element {
   
-   def build() : Element = {
+   def render() : String = {
      html5(attr("class -> full", "lang -> en"),
         head(
             meta(attr("charset -> utf-8")),
@@ -13,18 +13,18 @@ class Layout(content: String, converted: String, error: String) {
             meta(attr("name -> description", "content -> javatags converter: convert html in javatags language, Java HTML builder")),
             meta(attr("name -> author", "content -> manlioGit")),
             title("javatagsconverter"),
-            link(attr("href -> css/bootstrap.min.css", "rel-> stylesheet")),
-            link(attr("href -> css/full.css", "rel-> stylesheet")),
+            link(attr("rel-> stylesheet").add("href", path + "/css/bootstrap.min.css")),
+            link(attr("rel-> stylesheet").add("href", path + "/css/full.css")),
             text("""<!--[if lt IE 9]>
                      <script src='https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js></script>
                      <script src='https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.jsi></script>
                     <![endif]-->""")            
         ),
-        body(
+        body(attr("style -> background: url(" + path + "/images/background.jpg) no-repeat center center fixed;"),
           nav(attr("class -> navbar navbar-inverse navbar-fixed-top", "role -> navigation"),
               div(attr("class -> container" ),
                   div(attr("class -> navbar-header"),
-                      a(attr("class -> navbar-brand", "href -> /" ), "JavaTagsConverter")
+                      a(attr("class -> navbar-brand").add("href", path), "JavaTagsConverter")
                   ),
                   div(attr("class -> collapse navbar-collapse"),
                     ul(attr("class -> nav navbar-nav"),
@@ -52,7 +52,7 @@ class Layout(content: String, converted: String, error: String) {
             ) else span(),
         	div(attr("class -> row"),
         	  div(attr("class -> col-md-4 col-md-offset-2 panel panel-default content"),
-          		form(attr("method -> post", "action -> /" ),
+          		form(attr("method -> post").add("action", path),
             		 div(attr("class -> form-group"),	
             		       textarea(attr("class -> form-control", "rows -> 20", "data-role -> none", "name -> content"), text(content)) 
             		   ),
@@ -68,9 +68,9 @@ class Layout(content: String, converted: String, error: String) {
           	     )
         	    )
           ),
-          script(attr("src -> js/jquery.js")),
-          script(attr("src -> js/bootstrap.min.js"))
+          script(attr().add("src", path + "/js/jquery.js")),
+          script(attr().add("src", path + "/js/bootstrap.min.js")),
         )
-      );
+      ).render();
    }
 }
