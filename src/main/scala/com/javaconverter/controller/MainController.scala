@@ -3,7 +3,7 @@ import  com.github.manliogit.javatags.lang.HtmlHelper._
 import org.jsoup.Jsoup
 import com.javaconverter.view.Layout
 import com.javaconverter.model.Convert
-import com.sun.webkit.dom.JSObject
+
 
 class MainController extends Controller {
 	val ROUTE = "/"
