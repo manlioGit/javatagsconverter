@@ -9,7 +9,13 @@
 
 ```sh
 heroku plugins:install heroku-cli-deploy
-heroku war:deploy <path_to_war_file --app <app_name>
+```
+
+* deploy
+
+```sh
+sbt package
+heroku war:deploy target/scala-2.12/javatagsconverter_2.12-1.0.0-SNAPSHOT.war --app javatagsconverter
 ```
 
 * Logs
