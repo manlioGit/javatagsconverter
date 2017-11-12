@@ -1,4 +1,3 @@
-
 name := "javatagsconverter"
 
 version := "1.0.0-SNAPSHOT"
@@ -18,6 +17,4 @@ libraryDependencies += "org.scalactic" %% "scalactic" % "3.0.4"
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.4" % "test"
 
 enablePlugins(JettyPlugin)
-
-enablePlugins(JavaServerAppPackaging)
 
