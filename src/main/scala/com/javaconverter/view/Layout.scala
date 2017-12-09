@@ -14,6 +14,7 @@ class Layout(path: String, content: String, converted: String, error: String) ex
             meta(attr("name -> author", "content -> manlioGit")),
             title("javatagsconverter"),
             link(attr("rel-> stylesheet").add("href", path + "/css/bootstrap.min.css")),
+            link(attr("rel-> stylesheet").add("href", path + "/css/codemirror.css")),
             link(attr("rel-> stylesheet").add("href", path + "/css/full.css")),
             text("""<!--[if lt IE 9]>
                      <script src='https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js></script>
@@ -54,7 +55,7 @@ class Layout(path: String, content: String, converted: String, error: String) ex
         	  div(attr("class -> col-md-4 col-md-offset-2 panel panel-default content"),
           		form(attr("method -> post").add("action", path),
             		 div(attr("class -> form-group"),	
-            		       textarea(attr("class -> form-control", "rows -> 20", "data-role -> none", "name -> content"), text(content)) 
+            		       textarea(attr("id -> htmlText", "class -> form-control", "rows -> 20", "data-role -> none", "name -> content"), text(content)) 
             		   ),
             		   button(attr("type -> submit", "class -> btn btn-default"), "Submit")
           	    )
@@ -62,7 +63,7 @@ class Layout(path: String, content: String, converted: String, error: String) ex
           	  div(attr("class -> col-md-4 panel panel-default content"),
           		  form(
               		 div(attr("class -> form-group"),	
-              		   textarea(attr("class -> form-control", "rows -> 20", "data-role -> none"), text(converted))
+              		   textarea(attr("id -> javaText","class -> form-control", "rows -> 20", "data-role -> none"), text(converted))
               		 ),
               		 button(attr("type -> submit", "class -> btn btn-default", "disabled -> disabled"), "...")
           	     )
@@ -70,6 +71,23 @@ class Layout(path: String, content: String, converted: String, error: String) ex
           ),
           script(attr().add("src", path + "/js/jquery.js")),
           script(attr().add("src", path + "/js/bootstrap.min.js")),
+          script(attr().add("src", path + "/js/codemirror.js")),
+          script(attr().add("src", path + "/js/xml.js")),
+          script(attr().add("src", path + "/js/clike.js")),
+          script(
+              "var htmlEditor = CodeMirror.fromTextArea(document.getElementById('htmlText'), { " + 
+              "  lineNumbers: true, " +
+              "  mode: 'text/html' "  +
+              "}); " +
+              "htmlEditor.setSize('100%','650');"
+          ),
+          script(
+              "var javaEditor = CodeMirror.fromTextArea(document.getElementById('javaText'), { " + 
+              "  lineNumbers: true, "  +
+              "  mode: 'text/x-java' " +
+              "}); " +
+              "javaEditor.setSize('100%','650');"
+          )
         )
       ).render();
    }
