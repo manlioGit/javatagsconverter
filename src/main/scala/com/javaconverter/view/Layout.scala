@@ -25,7 +25,13 @@ class Layout(convert: Convert, error: String = "") extends Element {
                <script src='https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.jsi></script>
               <![endif]-->
            """
-         )
+         ),
+         script(attr().add("src", "/js/jquery.js")),
+         script(attr().add("src", "/js/bootstrap.min.js")),
+         script(attr().add("src", "/js/codemirror-5.5.9.js")),
+         script(attr().add("src", "/js/ruby.js")),
+         script(attr().add("src", "/js/xml.js")),
+         script(attr().add("src", "/js/clike.js"))
        ),
        body(attr("style -> background: url(/images/background.jpg) no-repeat center center fixed;"),
          div(attr("class -> container-fluid"),
@@ -37,10 +43,10 @@ class Layout(convert: Convert, error: String = "") extends Element {
                div(attr("class -> collapse navbar-collapse"),
                  ul(attr("class -> nav navbar-nav"),
                    li(
-                     a(attr("href -> https://github.com/manlioGit/javatags", "target -> _blank"),"Online converter for JavaTags")
+                     a(attr("href -> https://github.com/manlioGit/javatags", "target -> _blank"),"JavaTags"),
                    ),
                    li(
-                     a(attr("href -> https://github.com/manlioGit/ruby-tags", "target -> _blank"),"Online converter for Ruby-Tags")
+                     a(attr("href -> https://github.com/manlioGit/ruby-tags", "target -> _blank"),"Ruby-Tags")
                    )
                  )
                )
@@ -69,8 +75,9 @@ class Layout(convert: Convert, error: String = "") extends Element {
                      text(convert.toHtml())
                    )
                  ),
-                 button(attr("type -> submit", "class -> btn btn-default", "formaction -> /?type=java"), "JavaTags"),
-                 button(attr("type -> submit", "class -> btn btn-default", "formaction -> /?type=ruby"), "RubyTags")
+                 button(attr("type -> submit", "class -> btn btn-default", "formaction -> /?type=java"), "Jvm"),
+                 text("&nbsp;"),
+                 button(attr("type -> submit", "class -> btn btn-default", "formaction -> /?type=ruby"), "Ruby")
                )
              ),
              div(attr("class -> col-md-5 panel panel-default content"),
@@ -85,12 +92,6 @@ class Layout(convert: Convert, error: String = "") extends Element {
              )
            )
          ),
-         script(attr().add("src", "/js/jquery.js")),
-         script(attr().add("src", "/js/bootstrap.min.js")),
-         script(attr().add("src", "/js/codemirror-5.5.9.js")),
-         script(attr().add("src", "/js/ruby.js")),
-         script(attr().add("src", "/js/xml.js")),
-         script(attr().add("src", "/js/clike.js")),
          script(
            "var htmlEditor = CodeMirror.fromTextArea(document.getElementById('htmlText'), { " +
              "  lineNumbers: true, " +
@@ -101,7 +102,7 @@ class Layout(convert: Convert, error: String = "") extends Element {
          script(
            "var editor = CodeMirror.fromTextArea(document.getElementById('javaText'), { " +
              "  lineNumbers: true, "  +
-             "  mode: 'text/x-ruby' " +
+             s"  mode: 'text/x-${convert.language}' " +
              "}); " +
              "editor.setSize('100%','650');"
          )

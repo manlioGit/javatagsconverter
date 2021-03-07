@@ -4,10 +4,20 @@ import com.javaconverter.model.Convert
 import org.scalatest.FunSuite
 
 class ConvertTest extends FunSuite {
-   
+
+  test("empty"){
+    assert_render("""
+      |html5(
+      |  head(),
+      |  body()
+      |)""",
+      ""
+    )
+  }
+
   test("leaf element"){
     assert_render("""
-      |html(
+      |html5(
       |  head(),
       |  body(
       |    div()
@@ -19,7 +29,7 @@ class ConvertTest extends FunSuite {
   
   test("leaf text"){
     assert_render("""
-      |html(
+      |html5(
       |  head(),
       |  body(
       |    text("xxx")
@@ -31,7 +41,7 @@ class ConvertTest extends FunSuite {
   
   test("leaf comment"){
     assert_render("""
-      |html(
+      |html5(
       |  head(
       |    text("<!-- comment -->")
       |  ),
@@ -43,7 +53,7 @@ class ConvertTest extends FunSuite {
   
   test("leaf element with attribute"){
     assert_render("""
-      |html(
+      |html5(
       |  head(
       |    meta(attr("charset -> utf-8"))
       |  ),
@@ -51,11 +61,24 @@ class ConvertTest extends FunSuite {
       |)""",
       "<head><meta charset='utf-8'></head>"
     )
- }
+  }
+
+  test("leaf element with attribute ruby"){
+    assert_render("""
+      |html5(
+      |  head(
+      |    meta(attr('http-equiv': "X-UA-Compatible"))
+      |  ),
+      |  body()
+      |)""",
+      "<head><meta http-equiv='X-UA-Compatible'></head>",
+      "ruby"
+    )
+  }
   
   test("convert html to javatags") {
     assert_render("""
-      |html(
+      |html5(
       |  head(),
       |  body(
       |    div(
@@ -69,7 +92,7 @@ class ConvertTest extends FunSuite {
   
   test("comments are managed as text node"){
     assert_render("""
-      |html(
+      |html5(
       |  head(),
       |  body(
       |    text("<!-- some comment -->"),
@@ -84,7 +107,7 @@ class ConvertTest extends FunSuite {
   
   test("attributes"){
     assert_render("""
-      |html(
+      |html5(
       |  head(
       |    meta(attr("charset -> utf-8")),
       |    title(
@@ -97,10 +120,27 @@ class ConvertTest extends FunSuite {
       "<head><meta charset='utf-8'><title>title</title><!-- comment --></head>"
     )
   }
+
+  test("attributes ruby"){
+    assert_render("""
+      |html5(
+      |  head(
+      |    meta(attr(charset: "utf-8")),
+      |    title(
+      |      text("title")
+      |    ),
+      |    text("<!-- comment -->")
+      |  ),
+      |  body()
+      |)""",
+      "<head><meta charset='utf-8'><title>title</title><!-- comment --></head>",
+      "ruby"
+    )
+  }
   
   test("element with attribute and child"){
     assert_render("""
-      |html(
+      |html5(
       |  head(),
       |  body(attr("charset -> utf-8"),
       |    div()
@@ -109,10 +149,23 @@ class ConvertTest extends FunSuite {
       "<body charset='utf-8'><div></div></body>"
     )
   }
+
+  test("element with attribute and child ruby"){
+    assert_render("""
+      |html5(
+      |  head(),
+      |  body(attr(charset: "utf-8"),
+      |    div()
+      |  )
+      |)""",
+      "<body charset='utf-8'><div></div></body>",
+      "ruby"
+    )
+  }
   
   test("script content is managed as text node"){
     assert_render("""
-      |html(
+      |html5(
       |  head(
       |    script(
       |      text("console.log('hello');")
@@ -124,17 +177,12 @@ class ConvertTest extends FunSuite {
     )
   }
 
-  test("empty"){
-    assert_render("""
-      |html(
-      |  head(),
-      |  body()
-      |)""",
-      ""
-    )
+  test("language") {
+    assert(new Convert().language ==  "java")
+    assert(new Convert(language = "ruby").language ==  "ruby")
   }
 
-  private def assert_render(expected: String, actual: String): Unit = {
-    assert(new Convert(actual).toTags == expected.stripMargin)
+  private def assert_render(expected: String, actual: String, language: String = "java"): Unit = {
+    assert(new Convert(actual, language).toTags == expected.stripMargin)
   }
 }

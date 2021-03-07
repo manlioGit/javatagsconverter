@@ -6,7 +6,7 @@ import org.jsoup.select.NodeVisitor
 
 import scala.collection.JavaConversions._
 
-class Convert(html: String = "", language: String = "java") {
+class Convert(html: String = "", val language: String = "java") {
 
   def toHtml() = {
     Jsoup.parse(html).toString().
@@ -50,7 +50,7 @@ class Convert(html: String = "", language: String = "java") {
 
   private def render(node: Node, depth: Int) = {
     val render = node match {
-      case n: Element => node.nodeName + "("
+      case n: Element => if(node.nodeName == "html") node.nodeName + "5(" else node.nodeName + "("
       case n: TextNode => s"""text("${node.asInstanceOf[TextNode].text()}""""
       case n: Comment => s"""text("<!--${node.asInstanceOf[Comment].getData}-->""""
       case n: DataNode => s"""text("${node.asInstanceOf[DataNode].getWholeData}""""
