@@ -1,6 +1,6 @@
 # javatagsconverter
 
-[online converter](https://javatagsconverter.herokuapp.com) for [JavaTags](https://github.com/manlioGit/javatags)
+[online converter](https://javatagsconverter.herokuapp.com) for [JavaTags](https://github.com/manlioGit/javatags) and [Ruby-Tags](https://github.com/manlioGit/ruby-tags) 
 
 
 ### Heroku deployment:
