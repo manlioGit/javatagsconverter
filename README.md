@@ -23,3 +23,14 @@ heroku war:deploy target/scala-2.12/javatagsconverter_2.12-1.0.0-SNAPSHOT.war --
 ```sh
 heroku logs --tail
 ```
+
+--- 
+
+### Local run:
+- Given that heroku has no more free plan, do the following to execute locally 
+
+```sh
+sbt package
+docker run --rm -v $PWD/target/scala-2.12:/usr/local/tomcat/webapps -p 8080:8080 tomcat:8.5.84-jre8
+```
+go to http://localhost:8080

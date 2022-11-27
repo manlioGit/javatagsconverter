@@ -16,5 +16,9 @@ libraryDependencies += "org.scalactic" %% "scalactic" % "3.0.4"
 
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.4" % "test"
 
+artifactName := { (sv: ScalaVersion, module: ModuleID, artifact: Artifact) =>
+  "ROOT." + artifact.extension
+}
+
 enablePlugins(JettyPlugin)
 
