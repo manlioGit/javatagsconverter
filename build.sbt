@@ -2,7 +2,7 @@ name := "javatagsconverter"
 
 version := "1.0.0-SNAPSHOT"
  
-scalaVersion := "2.12.3"
+scalaVersion := "2.12.15"
 
 resolvers += Resolver.mavenLocal
 
