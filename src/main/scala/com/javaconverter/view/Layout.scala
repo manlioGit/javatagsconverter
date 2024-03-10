@@ -35,8 +35,8 @@ class Layout(convert: Convert, error: String = "") extends Element {
                div(attr("class -> collapse navbar-collapse"),
                  ul(attr("class -> nav navbar-nav"),
                    group(
-                     List("JavaTags", "Ruby-Tags", "PyTags").map { l =>
-                       li(a(attr(s"href -> https://github.com/manlioGit/${l}", "target -> _blank"), l))
+                     List("JavaTags", "Ruby-Tags", "PyTagsUp").map { l =>
+                       li(a(attr(s"href -> https://github.com/manlioGit/${l.toLowerCase}", "target -> _blank"), l))
                      } : _*
                    )
                  )
