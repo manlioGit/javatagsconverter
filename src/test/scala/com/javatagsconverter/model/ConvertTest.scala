@@ -109,7 +109,7 @@ class ConvertTest extends FunSuite {
     assert_render("""
       |html5(
       |  head(
-      |    meta(attr("charset -> utf-8")),
+      |    meta(attr("charset -> utf-8", "class -> something x")),
       |    title(
       |      text("title")
       |    ),
@@ -117,7 +117,7 @@ class ConvertTest extends FunSuite {
       |  ),
       |  body()
       |)""",
-      "<head><meta charset='utf-8'><title>title</title><!-- comment --></head>"
+      "<head><meta charset='utf-8' class='something x'><title>title</title><!-- comment --></head>"
     )
   }
 
@@ -125,7 +125,7 @@ class ConvertTest extends FunSuite {
     assert_render("""
       |html5(
       |  head(
-      |    meta(attr(charset: "utf-8")),
+      |    meta(attr(charset: "utf-8", class: "something x")),
       |    title(
       |      text("title")
       |    ),
@@ -133,8 +133,25 @@ class ConvertTest extends FunSuite {
       |  ),
       |  body()
       |)""",
-      "<head><meta charset='utf-8'><title>title</title><!-- comment --></head>",
+      "<head><meta charset='utf-8' class='something x'><title>title</title><!-- comment --></head>",
       "ruby"
+    )
+  }
+
+  test("attributes python"){
+    assert_render("""
+      |html5(
+      |  head(
+      |    meta(attr({'charset': "utf-8", 'class': "something x"})),
+      |    title(
+      |      text("title")
+      |    ),
+      |    text("<!-- comment -->")
+      |  ),
+      |  body()
+      |)""",
+      "<head><meta charset='utf-8' class='something x'><title>title</title><!-- comment --></head>",
+      "python"
     )
   }
   
@@ -162,6 +179,19 @@ class ConvertTest extends FunSuite {
       "ruby"
     )
   }
+
+  test("element with attribute and child python"){
+    assert_render("""
+      |html5(
+      |  head(),
+      |  body(attr({'charset': "utf-8"}),
+      |    div()
+      |  )
+      |)""",
+      "<body charset='utf-8'><div></div></body>",
+      "python"
+    )
+  }
   
   test("script content is managed as text node"){
     assert_render("""
@@ -180,6 +210,7 @@ class ConvertTest extends FunSuite {
   test("language") {
     assert(new Convert().language ==  "java")
     assert(new Convert(language = "ruby").language ==  "ruby")
+    assert(new Convert(language = "python").language ==  "python")
   }
 
   private def assert_render(expected: String, actual: String, language: String = "java"): Unit = {

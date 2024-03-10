@@ -1,6 +1,6 @@
 package com.javaconverter.view
-import com.github.manliogit.javatags.lang.HtmlHelper.{link, _}
 import com.github.manliogit.javatags.element.Element
+import com.github.manliogit.javatags.lang.HtmlHelper.{link, _}
 import com.javaconverter.model.Convert
 
 class Layout(convert: Convert, error: String = "") extends Element {
@@ -14,9 +14,7 @@ class Layout(convert: Convert, error: String = "") extends Element {
          meta(attr("name -> description", "content -> javatags converter: convert html in javatags language, Java HTML builder")),
          meta(attr("name -> author", "content -> manlioGit")),
          title("javatagsconverter"),
-         link(attr("rel-> stylesheet", "href -> /css/bootstrap.min.css")),
-         link(attr("rel-> stylesheet", "href -> /css/codemirror-5.5.9.css")),
-         link(attr("rel-> stylesheet", "href -> /css/full.css")),
+         group(List("bootstrap.min", "codemirror-5.65.16", "full").map(c => link(attr("rel -> stylesheet", s"href -> /css/${c}.css"))): _*),
          text("<!-- <a href='https://dryicons.com/free-icons/programming-language'> Icon by Dryicons </a>  -->"),
          link(attr("rel -> icon", "href -> /images/tags-favicon.svg")),
          text(
@@ -25,28 +23,21 @@ class Layout(convert: Convert, error: String = "") extends Element {
                <script src='https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.jsi></script>
               <![endif]-->
            """
-         ),
-         script(attr().add("src", "/js/jquery.js")),
-         script(attr().add("src", "/js/bootstrap.min.js")),
-         script(attr().add("src", "/js/codemirror-5.5.9.js")),
-         script(attr().add("src", "/js/ruby.js")),
-         script(attr().add("src", "/js/xml.js")),
-         script(attr().add("src", "/js/clike.js"))
+         )
        ),
        body(attr("style -> background: url(/images/background.jpg) no-repeat center center fixed;"),
          div(attr("class -> container-fluid"),
            nav(attr("class -> navbar navbar-inverse navbar-fixed-top", "role -> navigation"),
              div(attr("class -> container" ),
                div(attr("class -> navbar-header"),
-                 a(attr("class -> navbar-brand", "href -> /", "style -> padding-top: 0.475em;"), "Java/RubyTagsConverter")
+                 a(attr("class -> navbar-brand", "href -> /", "style -> padding-top: 0.475em;"), "Java/Ruby/PythonTagsConverter")
                ),
                div(attr("class -> collapse navbar-collapse"),
                  ul(attr("class -> nav navbar-nav"),
-                   li(
-                     a(attr("href -> https://github.com/manlioGit/javatags", "target -> _blank"),"JavaTags"),
-                   ),
-                   li(
-                     a(attr("href -> https://github.com/manlioGit/ruby-tags", "target -> _blank"),"Ruby-Tags")
+                   group(
+                     List("JavaTags", "Ruby-Tags", "PyTags").map { l =>
+                       li(a(attr(s"href -> https://github.com/manlioGit/${l}", "target -> _blank"), l))
+                     } : _*
                    )
                  )
                )
@@ -61,9 +52,7 @@ class Layout(convert: Convert, error: String = "") extends Element {
                      text("×")
                    )
                  ),
-                 strong(
-                   text("Warning!")
-                 ),
+                 strong(text("Warning!")),
                  text(error)
                )
              ) else span(),
@@ -75,15 +64,20 @@ class Layout(convert: Convert, error: String = "") extends Element {
                      text(convert.toHtml())
                    )
                  ),
-                 button(attr("type -> submit", "class -> btn btn-default", "formaction -> /?type=java"), "Jvm"),
-                 text("&nbsp;"),
-                 button(attr("type -> submit", "class -> btn btn-default", "formaction -> /?type=ruby"), "Ruby")
+                 group(
+                   Map("java" -> "JVM", "ruby" -> "Ruby", "python" -> "Python").map{ case(k,v) =>
+                     group(
+                       button(attr("type -> submit", "class -> btn btn-default", s"formaction -> /?type=${k}"), v),
+                       text("&nbsp;")
+                     )
+                   } toList : _*
+                 )
                )
              ),
              div(attr("class -> col-md-5 panel panel-default content"),
                form(
                  div(attr("class -> form-group"),
-                   textarea(attr("id -> javaText","class -> form-control", "rows -> 20", "data-role -> none"),
+                   textarea(attr("id -> codeText","class -> form-control", "rows -> 20", "data-role -> none"),
                      text(convert.toTags())
                    )
                  ),
@@ -92,20 +86,20 @@ class Layout(convert: Convert, error: String = "") extends Element {
              )
            )
          ),
+         group(List("codemirror-5.65.16", "ruby", "xml" , "clike", "python").map(s => script(attr(s"src -> /js/${s}.js"))): _*),
          script(
-           "var htmlEditor = CodeMirror.fromTextArea(document.getElementById('htmlText'), { " +
-             "  lineNumbers: true, " +
-             "  mode: 'text/html' "  +
-             "}); " +
-             "htmlEditor.setSize('100%','650');"
-         ),
-         script(
-           "var editor = CodeMirror.fromTextArea(document.getElementById('javaText'), { " +
-             "  lineNumbers: true, "  +
-             s"  mode: 'text/x-${convert.language}' " +
-             "}); " +
-             "editor.setSize('100%','650');"
-         )
+           s"""
+           CodeMirror.fromTextArea(document.getElementById('htmlText'), {
+             lineNumbers: true,
+             mode: 'text/html'
+           }).setSize('100%','650');
+
+           CodeMirror.fromTextArea(document.getElementById('codeText'), {
+             lineNumbers: true,
+             mode: 'text/x-${convert.language}'
+           }).setSize('100%','650');
+           """
+          )
        )
      ).render();
    }

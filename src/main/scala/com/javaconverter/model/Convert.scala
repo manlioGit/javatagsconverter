@@ -15,34 +15,38 @@ class Convert(html: String = "", val language: String = "java") {
   }
 
   def toTags() = {
-    val attrMap = Map("java" -> javaAttribute _, "ruby" -> rubyAttribute _).withDefaultValue(javaAttribute _)
+    val attrMap = Map(
+      "java" -> javaAttribute _,
+      "ruby" -> rubyAttribute _,
+      "python" -> pythonAttribute _
+    ).withDefaultValue(javaAttribute _)
 
     val doc = Jsoup.parse(html)
     var result = ""
     doc.child(0).traverse(new NodeVisitor() {
-        override def head(node: Node, depth: Int) {
-          result += render(node, depth)
-          val attribute = node.attributes().asList().map(attrMap(language))
-          if (!attribute.isEmpty && node.isInstanceOf[Element]) {
-            result += s"""attr(${attribute.mkString(", ")})"""
-            if(!node.childNodes().isEmpty()){
-              result += ","
-            }
-          }
-        }
-
-        override def tail(node: Node, depth: Int) {
-          if(node.childNodes().isEmpty()){
-            result +=  ")"
-          } else{
-            result +=   "\n" + pad(depth until 0 by -1) + ")"
-          }
-          if(node.nextSibling() != null){
+      override def head(node: Node, depth: Int) {
+        result += render(node, depth)
+        if (node.attributes().nonEmpty && node.isInstanceOf[Element]) {
+          val attributes = node.attributes().asList().map(attrMap(language))
+          val (l, r) = if(language == "python") ("{", "}") else ("","")
+          result += s"""attr(${attributes.mkString(l, ", ", r)})"""
+          if(!node.childNodes().isEmpty()){
             result += ","
           }
         }
       }
-    )
+
+      override def tail(node: Node, depth: Int) {
+        if(node.childNodes().isEmpty()){
+          result += ")"
+        } else{
+          result += "\n" + pad(depth until 0 by -1) + ")"
+        }
+        if(node.nextSibling() != null){
+          result += ","
+        }
+      }
+    })
     result
   }
 
@@ -65,5 +69,9 @@ class Convert(html: String = "", val language: String = "java") {
 
   private def javaAttribute(attribute: Attribute) = {
     s""""${attribute.getKey} -> ${attribute.getValue}""""
+  }
+
+  private def pythonAttribute(attribute: Attribute) = {
+    s"""'${attribute.getKey}': "${attribute.getValue}""""
   }
 }
